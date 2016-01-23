@@ -10,15 +10,11 @@
 
 <html>
 <head>
-<script type="text/javascript"
-	src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-2.0.0.min.js"></script>
-<script type="text/javascript"
-	src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
-<link
-	href="http://www.francescomalagrino.com/BootstrapPageGenerator/3/css/bootstrap-combined.min.css"
-	rel="stylesheet" media="screen">
-<script type="text/javascript"
-	src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="bootstrap/jquery-ui.js"></script>
+<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet"
+	media="screen">
+<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
 </head>
 <body>
 	<div class="container-fluid">
@@ -26,22 +22,23 @@
 			<div class="span12">
 				<div class="row-fluid">
 					<div class="col-xs-6 span9">
-					<h1 class="page-header">聊天....</h1>
-					<table class="table">
-						<tbody id="tall">
-						</tbody>
-					</table>			
+						<h1 class="page-header">聊天....</h1>
+						<table class="table" style="table-layout:fixed">
+							<tbody id="talk">
+							</tbody>
+						</table>
 					</div>
 					<div class="col-xs-6 span3">
 						<form action="javascript:send()">
 							<fieldset>
 								<legend>临时聊天室</legend>
-								<label>发言</label><input type="text" id="text"/> <!-- <label class="checkbox"><input
+								<label>发言</label><input type="text" id="text" />
+								<!-- <label class="checkbox"><input
 									type="checkbox" /> 匿名</label> -->
 								<button class="btn" type="submit">提交</button>
 							</fieldset>
 						</form>
-						<a href="test">struts 的test</a>
+						<a href="test">验证是加了struts的</a>
 					</div>
 				</div>
 			</div>
@@ -71,9 +68,7 @@
 	//接收来自后台的websocket数据
 	//添加到tall聊天记录
 	websocket.onmessage = function() {
-		//alert(event.data);
-		//$("#tall").append(event.data);
-		document.getElementById("tall").innerHTML+=event.data;
+		document.getElementById("talk").innerHTML = event.data+document.getElementById("talk").innerHTML;
 	}
 	//连接关闭的回调方法
 	websocket.onclose = function() {
@@ -96,10 +91,15 @@
 	//发送消息
 	function send() {
 		var message = document.getElementById('text').value;
-		var t="<h3>我：</h3><tr class='success' style='float:left'>"+message+"</tr><br/>";
-		document.getElementById("tall").innerHTML+=t;
-		//$("#tall").append(t);
+		var time=new Date();
+		var time2=new Date(parseInt(time.getTime())).toLocaleString();
+		var t = "<tr class='success' style='float:center'><td style='font-size: 20px'> 我：  </td></tr>"+
+			"<tr class='success' style='float:center'><td style='font-size: 20px;overflow:hidden;text-overflow:ellipsis;word-break:keep-all;white-space:nowrap;'>&nbsp; &nbsp;&nbsp;&nbsp; "+ message+ "</td></tr>"+
+			"<tr class='success' style='float:center'><td style='text-align: right'>"+time2+"</td></tr>";
+	
+		document.getElementById("talk").innerHTML = t+document.getElementById("talk").innerHTML;
 		websocket.send(message);
+
 
 	}
 </script>
