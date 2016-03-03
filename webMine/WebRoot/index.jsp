@@ -76,7 +76,6 @@
 							<br />
 						</s:iterator>
 					</table>
-					<img height="29" width="29" src="image/10.gif">
 				</div>
 			</div>
 			<div class="col-xs-6 span3">
