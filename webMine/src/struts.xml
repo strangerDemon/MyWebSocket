@@ -6,7 +6,11 @@
 		<action name="mineInit" method="init" class="mineAction">
 			<result name="true">index.jsp</result>
 		</action>
-		<action name="click" method="click" class="mineAction">
+		<action name="leftClick" method="leftClick" class="mineAction">
+			<result name="true">index.jsp</result>
+			<result name="false">index.jsp</result>
+		</action>
+		<action name="rightClick" method="rightClick" class="mineAction">
 			<result name="true">index.jsp</result>
 			<result name="false">index.jsp</result>
 		</action>

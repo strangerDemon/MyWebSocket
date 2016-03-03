@@ -10,6 +10,26 @@
 <link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet"
 	media="screen">
 <script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript">
+	//判断鼠标点击的按钮
+	function whichButton(event,a,b) {
+		var btnNum = event.button;
+		if (btnNum == 2) {//鼠标右键
+			window.location.href="rightClick?x="+a+"&y="+b;
+		} else if (btnNum == 0) {//鼠标左键
+			window.location.href="leftClick?x="+a+"&y="+b;
+		} else if (btnNum == 1) {
+			alert("您点击了鼠标中键！");
+		} else {
+			alert("您点击了" + btnNum + "号键，我不能确定它的名称。");
+		}
+	}
+	//计时
+	function countTime(){
+		
+	}
+</script>
+</head>
 </head>
 <title>web 扫雷</title>
 <body>
@@ -46,11 +66,11 @@
 						<s:iterator value="nowmines" var="array" status="i">
 							<tr>
 								<s:iterator value="array" var="str" status="j">
-									<a
-										href="click?x=<s:property value='#i.index'/>&y=<s:property value='#j.index'/>"><img
-										height="29" width="29"
-										src="image/<s:property value='#str' />.gif"></a>
-
+									<b
+										onmousedown="whichButton(event,<s:property value='#i.index'/>,<s:property value='#j.index'/>)">
+										<img height="29" width="29"
+										src="image/<s:property value='#str' />.gif">
+									</b>									
 								</s:iterator>
 							</tr>
 							<br />
@@ -59,7 +79,7 @@
 				</div>
 			</div>
 			<div class="col-xs-6 span3">
-				<br /> <br /> <b class="brand" style="font-size:40px;">进度</b> <br />
+				<br /> <br /> <b class="brand" style="font-size: 40px;">进度</b> <br />
 				<br />
 				<div class="progress">
 					<div class="progress-bar" aria-valuemin="0" aria-valuemax="100"
@@ -67,7 +87,7 @@
 						<span class="sr-only"><s:property value='percent' />% 完成</span>
 					</div>
 				</div>
-				<br /> <br /> <b class="brand" style="font-size:40px;">时间</b> <br />
+				<br /> <br /> <b class="brand" style="font-size: 40px;">时间</b> <br />
 				<br />
 			</div>
 		</div>
