@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 去掉struts自带的主题 -->
+	<constant name="struts.ui.theme" value="simple" />
+	<!-- 
+		解决struts拦截websocket 
+		struts在web.xml中配置会拦截websocket的访问路径，故在struts中去掉websocket的
+	-->
+	<constant name="struts.action.excludePattern" value="/*websocket*,ws://*"></constant>
+	<package name="default" namespace="/" extends="struts-default">
+		<action name="test" class="action.TestAction" method="Test">
+			<result name="true">index.jsp</result>
+		</action>
+	</package>
+</struts>    
+    
