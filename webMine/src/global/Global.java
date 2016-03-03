@@ -28,6 +28,7 @@ public class Global {
 	// 高级宽
 	public static int seniorLevelhigh = 30;
 	/*
+<<<<<<< HEAD
 	 * 空格数
 	 */
 	// 初级的空格数
@@ -37,6 +38,8 @@ public class Global {
 	// 高级的空格数
 	public static int seniorLevelSpaceNum = 221;
 	/*
+=======
+>>>>>>> f52457edfbb3a99b2466176a23aa85650e689176
 	 * 数字代表的状态
 	 */
 	// 雷的状态

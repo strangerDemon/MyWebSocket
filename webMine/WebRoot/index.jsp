@@ -69,13 +69,14 @@
 									<b
 										onmousedown="whichButton(event,<s:property value='#i.index'/>,<s:property value='#j.index'/>)">
 										<img height="29" width="29"
-										src="image/<s:property value='#str' />.gif">
-									</b>									
+										src="image/<s:property value='#str'/>.gif">
+									</b>
 								</s:iterator>
 							</tr>
 							<br />
 						</s:iterator>
 					</table>
+					<img height="29" width="29" src="image/10.gif">
 				</div>
 			</div>
 			<div class="col-xs-6 span3">
