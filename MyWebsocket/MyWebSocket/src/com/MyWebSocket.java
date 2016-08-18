@@ -1,7 +1,7 @@
 package com;
 
 import java.io.IOException;
-import java.util.Date;
+
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.websocket.OnClose;
@@ -27,35 +27,44 @@ public class MyWebSocket {
 	/**
 	 * 
 	 * 连接建立成功调用的方法
+	 * 
 	 * @param session
-	 *可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
+	 *            可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
 	 */
 
 	@OnOpen
 	public void onOpen(Session session) {
+
 		this.session = session;
+
 		webSocketSet.add(this); // 加入set中
+
 		addOnlineCount(); // 在线数加1
-		System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());	
+
+		System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
+		
 		// 群发消息
-		String message = "<tr class='danger' style='float:center'><td style='font-size: 30px'> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户&nbsp;&nbsp;&nbsp;&nbsp;"+
-				session.toString().substring(session.toString().indexOf("@")+1)+"&nbsp;&nbsp;&nbsp;&nbsp;加入！	当前在线人数为:"+getOnlineCount()+"</td></tr>";
-		sendAllUser(message,session,1);
+		sendAllUser("新用户<h3>"+session.toString().substring(session.toString().indexOf("@"))+"</h3>加入！	当前在线人数为:" + getOnlineCount(),session,1);
+
 	}
 
 	/**
 	 * 
 	 * 连接关闭调用的方法
 	 */
+
 	@OnClose
 	public void onClose() {
+
 		webSocketSet.remove(this); // 从set中删除
+
 		subOnlineCount(); // 在线数减1
-		System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());	
+
+		System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
+		
 		// 群发消息
-		String message = "<tr class='danger' style='float:center'><td style='font-size: 30px'> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户&nbsp;&nbsp;&nbsp;&nbsp;"+
-				session.toString().substring(session.toString().indexOf("@")+1)+"&nbsp;&nbsp;&nbsp;&nbsp;退出！	当前在线人数为:"+getOnlineCount()+"</td></tr>";
-		sendAllUser(message,session,3);	
+		sendAllUser("用户<h3>"+this.session.toString().substring(session.toString().indexOf("@"))+"</h3>退出！	当前在线人数为:" + getOnlineCount(),session,3);
+
 	}
 
 	/***
@@ -64,13 +73,13 @@ public class MyWebSocket {
 	 * @param message 客户端发送过来的消息
 	 * @param session
 	 */
-	/*"<tr class='success' style='float:center'><td style='font-size: 20px'> 我：  </td></tr>"+
-	"<tr class='success' style='float:center'><td style='font-size: 20px;overflow:hidden;text-overflow:ellipsis;word-break:keep-all;white-space:nowrap;'>"+ message+ "</td></tr>"+
-	"<tr class='success' style='float:center'><td style='text-align: right'>"+time2+"</td></tr>"*/
+
 	@OnMessage
 	public void onMessage(String message, Session session) {
+
 		System.out.println("来自客户端的消息:" + message+"--session"+session);
 		// 群发消息
+<<<<<<< HEAD
 		String date=new Date().toLocaleString();
 		String message2 = "<li class='clearfix'>"+
 								"<div class='message-data align-right'>"+
@@ -84,6 +93,11 @@ public class MyWebSocket {
 							"</li>";
 		System.out.println(message2);
 		sendAllUser(message2,session,2);
+=======
+		sendAllUser(message,session,2);
+		
+
+>>>>>>> 7c66df6908cae9fff128ffeef55805c564601062
 	}
 
 	/**
@@ -116,8 +130,11 @@ public class MyWebSocket {
 		for (MyWebSocket item : webSocketSet) {
 			try {
 				if(item.session!=session){//不发消息给自己
-					item.sendMessage(message);
-							
+					if(type!=2){
+						item.sendMessage("<tr class='danger' style='float:left'>"+message+"</tr><br/>");
+					}else{
+						item.sendMessage("<tr class='info' style='float:left'><h3>"+session.toString().substring(session.toString().indexOf("@"))+"</h3> :"+message+"</tr><br/>");
+					}				
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
