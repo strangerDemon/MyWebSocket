@@ -10,14 +10,19 @@
 
 <html>
 <head>
+<!-- <link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet" media="screen"> -->
+<link href="css/chat.css" rel="stylesheet">
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+
 <script type="text/javascript" src="bootstrap/jquery-2.0.0.min.js"></script>
 <script type="text/javascript" src="bootstrap/jquery-ui.js"></script>
-<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet"
-	media="screen">
 <script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/chat.js"></script>
+
 </head>
 <body>
-	<div class="container-fluid">
+	<!-- <div class="container-fluid"> 
 		<div class="row-fluid">
 			<div class="span12">
 				<div class="row-fluid">
@@ -33,13 +38,64 @@
 							<fieldset>
 								<legend>临时聊天室</legend>
 								<label>发言</label><input type="text" id="text" />
-								<!-- <label class="checkbox"><input
-									type="checkbox" /> 匿名</label> -->
 								<button class="btn" type="submit">提交</button>
 							</fieldset>
 						</form>
-						<a href="test">验证是加了struts的</a>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>-->
+	<div class="container clearfix">
+		<div class="people-list" id="people-list">
+			<div class="search">
+				<input type="text" placeholder="search" /> <i class="fa fa-search"></i>
+			</div>
+			<ul class="list" id="userList">
+				<li class="clearfix"><img src="image/1.jpg" alt="avatar" />
+					<div class="about">
+						<div class="name">Vincent Porter</div>
+						<div class="status">
+							<i class="fa fa-circle online"></i> online
+						</div>
+					</div></li>
+
+				<li class="clearfix"><img src="image/1.jpg" alt="avatar" />
+					<div class="about">
+						<div class="name">Aiden Chavez</div>
+						<div class="status">
+							<i class="fa fa-circle offline"></i> left 7 mins ago
+						</div>
+					</div></li>			
+			</ul>
+		</div>
+
+		<div class="chat">
+			<div class="chat-header clearfix">
+				<img src="image/2.jpg" alt="avatar" />
+
+				<div class="chat-about">
+					<div class="chat-with">Chat</div>
+					<div class="chat-num-messages"></div>
+				</div>
+				<i class="fa fa-star"></i>
+			</div>
+			<!-- end chat-header -->
+
+			<div class="chat-history">
+				<ul id="talk">
+					
+				</ul>
+
+			</div>
+			<!-- end chat-history -->
+
+			<div class="chat-message clearfix">
+				<textarea name="message-to-send" id="message-to-send"
+					placeholder="Type your message" rows="3">
+           		</textarea>
+           		<div class="signin">
+					<input type="submit" value="发送" onclick="send()">
 				</div>
 			</div>
 		</div>
@@ -68,7 +124,7 @@
 	//接收来自后台的websocket数据
 	//添加到tall聊天记录
 	websocket.onmessage = function() {
-		document.getElementById("talk").innerHTML = event.data+document.getElementById("talk").innerHTML;
+		document.getElementById("talk").innerHTML = document.getElementById("talk").innerHTML+event.data;
 	}
 	//连接关闭的回调方法
 	websocket.onclose = function() {
@@ -90,17 +146,16 @@
 	}
 	//发送消息
 	function send() {
-		var message = document.getElementById('text').value;
+		var message = $("#message-to-send").val();
 		var time=new Date();
 		var time2=new Date(parseInt(time.getTime())).toLocaleString();
-		var t = "<tr class='success' style='float:center'><td style='font-size: 20px'> 我：  </td></tr>"+
-			"<tr class='success' style='float:center'><td style='font-size: 20px;overflow:hidden;text-overflow:ellipsis;word-break:keep-all;white-space:nowrap;'>&nbsp; &nbsp;&nbsp;&nbsp; "+ message+ "</td></tr>"+
-			"<tr class='success' style='float:center'><td style='text-align: right'>"+time2+"</td></tr>";
+		var t = "<li><div class='message-data'><span class='message-data-name'>"+
+				"<i class='fa fa-circle online'></i>我</span>"+
+				" <span class='message-data-time'>"+time2+"</span></div>"+
+				"<div class='message my-message'>"+message+"</div></li>";
 	
 		document.getElementById("talk").innerHTML = t+document.getElementById("talk").innerHTML;
 		websocket.send(message);
-
-
 	}
 </script>
 

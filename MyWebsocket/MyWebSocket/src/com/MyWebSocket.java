@@ -72,9 +72,16 @@ public class MyWebSocket {
 		System.out.println("来自客户端的消息:" + message+"--session"+session);
 		// 群发消息
 		String date=new Date().toLocaleString();
-		String message2 = "<tr class='warning' style='float:center'><td style='font-size: 20px'> "+session.toString().substring(session.toString().indexOf("@")+1)+":</td></tr>"+
-		"<tr class='warning' style='float:center'><td style='font-size: 20px;overflow:hidden;text-overflow:ellipsis;word-break:keep-all;white-space:nowrap;'>"+ message+ "</td></tr>"+
-		"<tr class='warning' style='float:center'><td style='text-align: right'>"+date+"</td></tr>";
+		String message2 = "<li class='clearfix'>"+
+								"<div class='message-data align-right'>"+
+									"<span class='message-data-time'>"+date+"</span>"+
+									"<span class='message-data-name'>"+session.toString().substring(session.toString().indexOf("@")+1)+"</span>"+
+									"<i class='fa fa-circle me'></i>"+
+								"</div>"+
+								"<div class='message other-message float-right'>"+
+									message+
+								"</div>"+
+							"</li>";
 		System.out.println(message2);
 		sendAllUser(message2,session,2);
 	}
@@ -120,7 +127,16 @@ public class MyWebSocket {
 		}
 	}
 	
-	
+	/**
+	 * 发送给指点的人
+	 * @param message 信息
+	 * @param name	用户名
+	 * @param session 自己
+	 * @param type
+	 */
+	public void sendToSomeOne(String message,String name,Session session){
+		
+	}
 	
 	public static synchronized int getOnlineCount() {
 
