@@ -79,7 +79,7 @@ public class MyWebSocket {
 
 		System.out.println("来自客户端的消息:" + message+"--session"+session);
 		// 群发消息
-<<<<<<< HEAD
+
 		String date=new Date().toLocaleString();
 		String message2 = "<li class='clearfix'>"+
 								"<div class='message-data align-right'>"+
@@ -93,11 +93,10 @@ public class MyWebSocket {
 							"</li>";
 		System.out.println(message2);
 		sendAllUser(message2,session,2);
-=======
+
 		sendAllUser(message,session,2);
 		
 
->>>>>>> 7c66df6908cae9fff128ffeef55805c564601062
 	}
 
 	/**
