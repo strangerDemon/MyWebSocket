@@ -131,6 +131,12 @@ body {
 .chat .chat-history .other-message {
     background: #94c2ed;
 }
+.chat .chat-history .login-message {
+    background: #6f6;
+}
+.chat .chat-history .logout-message {
+    background: #f51;
+}
 .chat .chat-history .other-message:after {
     border-bottom-color: #94c2ed;
     left: 93%;
@@ -197,4 +203,39 @@ body {
     content: " ";
     clear: both;
     height: 0;
+}
+
+
+input[type="submit"]{
+  font-size: 30px;
+  color: #fff;
+  outline: none;
+  border: none;
+  background: #3ea751;
+  width: 100%;
+  padding: 18px 0;
+  border-bottom-left-radius: 15px;
+	-webkit-border-bottom-left-radius: 15px;
+	-moz-border-bottom-left-radius: 15px;
+	-o-border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	-webkit-border-bottom-right-radius: 15px;
+	-moz-border-bottom-right-radius: 15px;
+	-o-border-bottom-right-radius: 15px;
+	cursor: pointer;
+}
+input[type="submit"]:hover {
+	background: #ff2775;
+  border-bottom-left-radius: 15px;
+	-webkit-border-bottom-left-radius: 15px;
+	-moz-border-bottom-left-radius: 15px;
+	-o-border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	-webkit-border-bottom-right-radius: 15px;
+	-moz-border-bottom-right-radius: 15px;
+	-o-border-bottom-right-radius: 15px;
+  	transition: 1s all;
+	-webkit-transition: 1s all;
+	-moz-transition: 1s all;
+	-o-transition: 1s all;
 }

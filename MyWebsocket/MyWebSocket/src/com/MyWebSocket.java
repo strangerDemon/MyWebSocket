@@ -1,7 +1,8 @@
 package com;
 
 import java.io.IOException;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.websocket.OnClose;
@@ -44,8 +45,19 @@ public class MyWebSocket {
 		System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
 		
 		// 群发消息
-		sendAllUser("新用户<h3>"+session.toString().substring(session.toString().indexOf("@"))+"</h3>加入！	当前在线人数为:" + getOnlineCount(),session,1);
-
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");	
+		String date=format.format(new Date());
+		String message = "<li class='clearfix'>"+
+								"<div class='message-data align-right'>"+
+									" <span class='message-data-name'>"+date+"</span>"+
+									"<i class='fa fa-circle me'></i>"+
+								"</div>"+
+								"<div class='message login-message float-right'>新用户"+session.toString().substring(session.toString().indexOf("@")+1)+
+								"加入！	当前在线人数为:" + getOnlineCount()+
+								"</div>"+
+							"</li>";
+		sendAllUser(message,session,1);
 	}
 
 	/**
@@ -61,9 +73,20 @@ public class MyWebSocket {
 		subOnlineCount(); // 在线数减1
 
 		System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
-		
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");	
+		String date=format.format(new Date());
+		String message = "<li class='clearfix'>"+
+								"<div class='message-data align-right'>"+
+									" <span class='message-data-name'>"+date+"</span>"+
+									"<i class='fa fa-circle me'></i>"+
+								"</div>"+
+								"<div class='message logout-message float-right'>用户"+session.toString().substring(session.toString().indexOf("@")+1)+
+								"退出！	当前在线人数为"+getOnlineCount()+
+								"</div>"+
+							"</li>";
 		// 群发消息
-		sendAllUser("用户<h3>"+this.session.toString().substring(session.toString().indexOf("@"))+"</h3>退出！	当前在线人数为:" + getOnlineCount(),session,3);
+		sendAllUser(message,session,3);
 
 	}
 
@@ -79,24 +102,19 @@ public class MyWebSocket {
 
 		System.out.println("来自客户端的消息:" + message+"--session"+session);
 		// 群发消息
-
-		String date=new Date().toLocaleString();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");	
+		String date=format.format(new Date());
 		String message2 = "<li class='clearfix'>"+
 								"<div class='message-data align-right'>"+
-									"<span class='message-data-time'>"+date+"</span>"+
-									"<span class='message-data-name'>"+session.toString().substring(session.toString().indexOf("@")+1)+"</span>"+
+									"<span class='message-data-time' style='font-size:20px'>"+session.toString().substring(session.toString().indexOf("@")+1)+"</span>"+
+									" <span class='message-data-name'>"+date+"</span>"+
 									"<i class='fa fa-circle me'></i>"+
 								"</div>"+
 								"<div class='message other-message float-right'>"+
 									message+
 								"</div>"+
 							"</li>";
-		System.out.println(message2);
 		sendAllUser(message2,session,2);
-
-		sendAllUser(message,session,2);
-		
-
 	}
 
 	/**
@@ -130,9 +148,9 @@ public class MyWebSocket {
 			try {
 				if(item.session!=session){//不发消息给自己
 					if(type!=2){
-						item.sendMessage("<tr class='danger' style='float:left'>"+message+"</tr><br/>");
+						item.sendMessage(message);
 					}else{
-						item.sendMessage("<tr class='info' style='float:left'><h3>"+session.toString().substring(session.toString().indexOf("@"))+"</h3> :"+message+"</tr><br/>");
+						item.sendMessage(message);
 					}				
 				}
 			} catch (IOException e) {

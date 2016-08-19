@@ -10,17 +10,13 @@
 
 <html>
 <head>
-<<<<<<< HEAD
 <!-- <link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet" media="screen"> -->
 <link href="css/chat.css" rel="stylesheet">
 <link href="css/font-awesome.min.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
 
-<script type="text/javascript" src="bootstrap/jquery-2.0.0.min.js"></script>
-<script type="text/javascript" src="bootstrap/jquery-ui.js"></script>
-<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/chat.js"></script>
-
+<script type="text/javascript" src="layer/2.1/layer.js"></script>
 </head>
 <body>
 	<div class="container clearfix">
@@ -68,10 +64,8 @@
 			<!-- end chat-history -->
 
 			<div class="chat-message clearfix">
-				<textarea name="message-to-send" id="message-to-send"
-					placeholder="Type your message" rows="3">
-           		</textarea>
-           		<div class="signin">
+				<textarea name="message" id="message" placeholder="Type your message" rows="3"></textarea>
+           		<div>
 					<input type="submit" value="发送" onclick="send()">
 				</div>
 			</div>
@@ -88,65 +82,48 @@
 	if ('WebSocket' in window) {
 		websocket = new WebSocket("ws://localhost:8080/MyWebSocket/websocket");
 	} else {
-		alert('Not support websocket')
+		layer.msg("Not support websocket!", { icon: 5, time: 1000 });
 	}
 	//连接发生错误的回调方法
 	websocket.onerror = function() {
-		setMessageInnerHTML("error");
+		layer.msg("error!", { icon: 5, time: 1000 });
 	};
 	//连接成功建立的回调方法
 	websocket.onopen = function(event) {
-		setMessageInnerHTML("open");
+		layer.msg("open!", { icon: 6, time: 1000 });
 	}
 	//接收来自后台的websocket数据
-	//添加到tall聊天记录
+	//添加到talk聊天记录
 	websocket.onmessage = function() {
-
 		document.getElementById("talk").innerHTML = document.getElementById("talk").innerHTML+event.data;
-
-		//alert(event.data);
-		//$("#tall").append(event.data);
-		document.getElementById("tall").innerHTML+=event.data;
+		//$("#talk").append(t);
 	}
 	//连接关闭的回调方法
 	websocket.onclose = function() {
-		setMessageInnerHTML("close");
+		layer.msg("close!", { icon: 2, time: 1000 });
 	}
 	//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
 	window.onbeforeunload = function() {
 		websocket.close();
 
 	}
-	//将消息显示在网页上
-	function setMessageInnerHTML(innerHTML) {
-		document.getElementById('message').innerHTML += innerHTML + '<br/>';
-	}
 	//关闭连接
 	function closeWebSocket() {
 		websocket.close();
-
 	}
 	//发送消息
-	function send() {
-
-		var message = $("#message-to-send").val();
+	function send() { 
+		var message = $("#message").val();
 		var time=new Date();
 		var time2=new Date(parseInt(time.getTime())).toLocaleString();
-		var t = "<li><div class='message-data'><span class='message-data-name'>"+
+		var t = "<li><div class='message-data'><span class='message-data-name' style='font-size:20px'>"+
 				"<i class='fa fa-circle online'></i>我</span>"+
 				" <span class='message-data-time'>"+time2+"</span></div>"+
 				"<div class='message my-message'>"+message+"</div></li>";
-	
-		document.getElementById("talk").innerHTML = t+document.getElementById("talk").innerHTML;
+		
+		document.getElementById("talk").innerHTML = document.getElementById("talk").innerHTML+t;
+		//$("#talk").append(t);
 		websocket.send(message);
-
-		var message = document.getElementById('text').value;
-		var t="<h3>我：</h3><tr class='success' style='float:left'>"+message+"</tr><br/>";
-		document.getElementById("tall").innerHTML+=t;
-		//$("#tall").append(t);
-		websocket.send(message);
-
-
 	}
 </script>
 
