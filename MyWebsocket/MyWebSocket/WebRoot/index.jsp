@@ -10,13 +10,27 @@
 
 <html>
 <head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- <link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet" media="screen"> -->
 <link href="css/chat.css" rel="stylesheet">
 <link href="css/font-awesome.min.css" rel="stylesheet">
+<!--faceMocion -->
+<link rel="stylesheet" type="text/css" href="lib/faceMocion/demo.css">
+<link href="lib/faceMocion/faceMocion.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	.mt50{margin-top: 50px}
+	.pd30{padding: 30px}
+</style>
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/chat.js"></script>
-<script type="text/javascript" src="layer/2.1/layer.js"></script>
+<!-- layer -->
+<script type="text/javascript" src="lib/layer/2.1/layer.js"></script>
+<!-- faceMocion -->
+<script type="text/javascript" src="lib/faceMocion/faceMocion.js"></script> 
+
 </head>
 <body>
 	<div class="container clearfix">
@@ -25,7 +39,7 @@
 				<input type="text" placeholder="search" /> <i class="fa fa-search"></i>
 			</div>
 			<ul class="list" id="userList">
-				<li class="clearfix"><img src="image/1.jpg" alt="avatar" />
+				<li class="clearfix"><img src="faceImage/1.jpg" alt="avatar" />
 					<div class="about">
 						<div class="name">Vincent Porter</div>
 						<div class="status">
@@ -33,7 +47,7 @@
 						</div>
 					</div></li>
 
-				<li class="clearfix"><img src="image/1.jpg" alt="avatar" />
+				<li class="clearfix"><img src="faceImage/1.jpg" alt="avatar" />
 					<div class="about">
 						<div class="name">Aiden Chavez</div>
 						<div class="status">
@@ -45,7 +59,7 @@
 
 		<div class="chat">
 			<div class="chat-header clearfix">
-				<img src="image/2.jpg" alt="avatar" />
+				<img src="faceImage/2.jpg" alt="avatar" />
 
 				<div class="chat-about">
 					<div class="chat-with">Chat</div>
@@ -62,9 +76,16 @@
 
 			</div>
 			<!-- end chat-history -->
-
+			
 			<div class="chat-message clearfix">
+				<!-- 表情 -->
+				<div class="col-md-8 col-md-offset-4 col-xs-12 mt50 pd30">
+					<input type="hidden" value="amo" class="prueba" id="facebookEmoji"/>
+				</div>
+				<!-- 发言内容 -->
 				<textarea name="message" id="message" placeholder="Type your message" rows="3"></textarea>
+
+            </div>
            		<div>
 					<input type="submit" value="发送" onclick="send()">
 				</div>
@@ -80,7 +101,8 @@
 	var websocket = null;
 	//判断当前浏览器是否支持WebSocket
 	if ('WebSocket' in window) {
-		websocket = new WebSocket("ws://localhost:8080/MyWebSocket/websocket");
+		//websocket = new WebSocket("ws://localhost:8080/MyWebSocket/websocket");
+		websocket = new WebSocket("ws://121.42.178.69:8080/MyWebSocket/websocket");
 	} else {
 		layer.msg("Not support websocket!", { icon: 5, time: 1000 });
 	}
@@ -127,4 +149,9 @@
 	}
 </script>
 
+<script type="text/javascript">
+	$(function(){
+		$("#facebookEmoji").faceMocion();
+	})
+</script>
 </html>
