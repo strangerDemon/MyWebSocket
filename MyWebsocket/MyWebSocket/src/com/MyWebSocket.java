@@ -51,9 +51,9 @@ public class MyWebSocket {
 		String message = "<li class='clearfix'>"+
 								"<div class='message-data align-right'>"+
 									" <span class='message-data-name'>"+date+"</span>"+
-									"<i class='fa fa-circle me'></i>"+
+									"<i class='fa fa-circle other'></i>"+
 								"</div>"+
-								"<div class='message login-message float-right'>新用户"+session.toString().substring(session.toString().indexOf("@")+1)+
+								"<div class='login-message float-right'>新用户"+session.toString().substring(session.toString().indexOf("@")+1)+
 								"加入！	当前在线人数为:" + getOnlineCount()+
 								"</div>"+
 							"</li>";
@@ -78,10 +78,11 @@ public class MyWebSocket {
 		String date=format.format(new Date());
 		String message = "<li class='clearfix'>"+
 								"<div class='message-data align-right'>"+
+									"<span class='message-data-time' style='font-size:20px'></span>"+
 									" <span class='message-data-name'>"+date+"</span>"+
-									"<i class='fa fa-circle me'></i>"+
+									"<i class='fa fa-circle other'></i>"+
 								"</div>"+
-								"<div class='message logout-message float-right'>用户"+session.toString().substring(session.toString().indexOf("@")+1)+
+								"<div class='logout-message float-right'>用户"+session.toString().substring(session.toString().indexOf("@")+1)+
 								"退出！	当前在线人数为"+getOnlineCount()+
 								"</div>"+
 							"</li>";
@@ -108,7 +109,7 @@ public class MyWebSocket {
 								"<div class='message-data align-right'>"+
 									"<span class='message-data-time' style='font-size:20px'>"+session.toString().substring(session.toString().indexOf("@")+1)+"</span>"+
 									" <span class='message-data-name'>"+date+"</span>"+
-									"<i class='fa fa-circle me'></i>"+
+									"<i class='fa fa-circle other'></i>"+
 								"</div>"+
 								"<div class='message other-message float-right'>"+
 									message+

@@ -67,14 +67,20 @@ $.fn.extend({faceMocion: function(opciones) {
                 ElInputSeleccionado=SelectorEmocion.attr("id-referencia");
                 $("."+ElInputSeleccionado).val($(this).attr('class'));
                 if(count==0){
-                	/*var str="<label class='Selector selectorFace  "+$(this).attr('class')+
-                		"' id-referencia='"+ElInputSeleccionado+
-                		"' dato-descripcion='"+$(this).attr('class')+"'></label>";
-                		$("#message").append(str);*/
-                		var me=$("#message").val()+" #"+$(this).attr('class');
-                		$("#message").val(me);
-                		count=-100;
-                		return;
+                	var img="<div class='Selector selectorFace  "+$(this).attr('class')+
+            		/*"' id-referencia='"+ElInputSeleccionado+*/
+            		"' dato-descripcion='"+$(this).attr('class')+"'></div>";
+                	var time=new Date();
+            		var time2=new Date(parseInt(time.getTime())).toLocaleString();
+            		var imgMessage = "<li><div class='message-data'><span class='message-data-name' style='font-size:20px'>"+
+            				"<i class='fa fa-circle online'></i>我</span>"+
+            				" <span class='message-data-time'>"+time2+"</span></div>"+
+            				"<div class='message my-message' style='height:80px;width=80px;'>"+img+"</div></li>";
+                	
+                	$("#talk").append(imgMessage);
+                	websocket.send(""+$(this).attr('class'));
+                	count=-100;
+                	return;
                 }
                 	    
 			});
