@@ -10,7 +10,6 @@
 
 <html>
 <head>
-<<<<<<< HEAD
 <!-- <link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet" media="screen"> -->
 <link href="css/chat.css" rel="stylesheet">
 <link href="css/font-awesome.min.css" rel="stylesheet">
