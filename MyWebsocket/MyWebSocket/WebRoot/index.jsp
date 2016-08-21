@@ -55,7 +55,6 @@
 					<div class="chat-with">Chat</div>
 					<div class="chat-num-messages"></div>
 				</div>
-				<i class="fa fa-star"></i>
 			</div>
 			<!-- end chat-header -->
 
@@ -69,11 +68,11 @@
 			
 			<div class="chat-message clearfix">
 				<!-- 表情 -->
-				<div class="col-md-8 col-md-offset-4 col-xs-12 mt50 pd30">
+				<div>
 					<input type="hidden" value="amo" class="prueba" id="facebookEmoji"/>
 				</div>
 				<!-- 发言内容 -->
-				<textarea name="message" id="message" placeholder="Type your message" rows="3"></textarea>
+				<textarea name="message" id="message" placeholder="Type your message" rows="3" ></textarea>
            		<div>
 					<input type="submit" value="发送" onclick="send()">
 				</div>
@@ -119,20 +118,13 @@
 	function chat(name){
 		document.getElementById("chat").style.display="block";
 		document.getElementById("mainPanel").style.display="none";
-		var user="<li class='clearfix'><img src='faceImage/1.jpg' alt='avatar' />"+
-					"<div class='about'>"+
-						"<div class='name'>"+name+"</div>"+
-						"<div class='status'>"+
-							"<i class='fa fa-circle online'></i>"+
-						"</div>"+
-					"</div></li>";
-			$("#userList").append(user);
+		websocket.send("#name"+$("#name").val());
 	}
 	
 	//判断当前浏览器是否支持WebSocket
 	if ('WebSocket' in window) {
-		websocket = new WebSocket("ws://localhost:8080/MyWebSocket/websocket");
-		//websocket = new WebSocket("ws://121.42.178.69:8080/MyWebSocket/websocket");
+		//websocket = new WebSocket("ws://localhost:8080/MyWebSocket/websocket");
+		websocket = new WebSocket("ws://121.42.178.69:8080/MyWebSocket/websocket");
 	} else {
 		layer.msg("Not support websocket!", { icon: 5, time: 1000 });
 	}
@@ -143,23 +135,42 @@
 	};
 	//连接成功建立的回调方法
 	websocket.onopen = function(event) {
-		layer.msg("!", { icon: 6, time: 1000 });
+		layer.msg("open!", { icon: 6, time: 1000 });		
 	}
+	
 	//接收来自后台的websocket数据
-	//添加到talk聊天记录
 	websocket.onmessage = function() {
-		//把特殊字符转成图片 molesto 
+		//刷新用户列表	
+		var message=event.data;
+		var logMessage=message.substring(0,5);
+		if(logMessage=="login"){
+			var name= message.substring(message.indexOf("户")+1,message.indexOf("加"));
+			//var id=message.substring(message.indexOd("key'"),message.indexOd("keyEnd"));alert(id);
+			var user="<li class='clearfix' id='"+name+"'><img src='faceImage/3.jpg' alt='avatar' />"+
+					"<div class='about'>"+
+						"<div class='name'>"+name+"</div>"+				
+					"</div></li>"; 
+			$("#userList").append(user);
+			message=event.data.substring(5);
+		}else if(logMessage=="lgout"){
+			message=event.data.substring(5);
+			var name= message.substring(message.indexOf("户")+1,message.indexOf("退"));
+			$("#"+name).remove();
+		}else if(logMessage=="allUs"){
+			message=event.data.substring(5);
+			$("#userList").append(message);
+			return;
+		}
+		//把特殊字符转成图片
 		var imageStr=/amo|molesto|asusta|divierte|gusta|triste|asombro|alegre/;
-		var emoji=event.data.match(imageStr);
+		var emoji=message.match(imageStr);
 		var show= event.data;
 		if(emoji!=null||emoji!=""){
 			var img="<div class='Selector selectorFace  "+emoji+
             		"' dato-descripcion='"+emoji+"'></div>";           		
-              show=show.replace(emoji,img);
+              message=message.replace(emoji,img);
 		}
-		$("#talk").append(show);
-		//刷新用户列表
-		
+		$("#talk").append(message);	
 	}
 	//连接关闭的回调方法
 	websocket.onclose = function() {
@@ -180,7 +191,7 @@
 		var time=new Date();
 		var time2=new Date(parseInt(time.getTime())).toLocaleString();
 		var t = "<li><div class='message-data'><span class='message-data-name' style='font-size:20px'>"+
-				"<i class='fa fa-circle online'></i>我</span>"+
+				"&nbsp;我</span>"+
 				" <span class='message-data-time'>"+time2+"</span></div>"+
 				"<div class='message my-message'>"+message+"</div></li>";
 		

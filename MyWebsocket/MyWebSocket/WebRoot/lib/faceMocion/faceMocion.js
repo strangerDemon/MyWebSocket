@@ -73,7 +73,7 @@ $.fn.extend({faceMocion: function(opciones) {
                 	var time=new Date();
             		var time2=new Date(parseInt(time.getTime())).toLocaleString();
             		var imgMessage = "<li><div class='message-data'><span class='message-data-name' style='font-size:20px'>"+
-            				"<i class='fa fa-circle online'></i>我</span>"+
+            				"我</span>"+
             				" <span class='message-data-time'>"+time2+"</span></div>"+
             				"<div class='message my-message' style='height:80px;width=80px;'>"+img+"</div></li>";
                 	

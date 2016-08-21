@@ -93,7 +93,7 @@ body {
     padding: 30px 30px 20px;
     border-bottom: 2px solid white;
     overflow-y: scroll;
-    height: 455px;
+    height: 525px;
 }
 .chat .chat-history .message-data {
     margin-bottom: 15px;

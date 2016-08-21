@@ -3,6 +3,8 @@ package com;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.websocket.OnClose;
@@ -24,7 +26,9 @@ public class MyWebSocket {
 	private static CopyOnWriteArraySet<MyWebSocket> webSocketSet = new CopyOnWriteArraySet<MyWebSocket>();
 	// 与某个客户端的连接会话，需要通过它来给客户端发送数据
 	private Session session;
-
+	//存储所有用户的昵称
+	private static Map<String,String> userName=new HashMap<String,String>();
+	
 	/**
 	 * 
 	 * 连接建立成功调用的方法
@@ -39,25 +43,12 @@ public class MyWebSocket {
 		this.session = session;
 
 		webSocketSet.add(this); // 加入set中
-
+		
+		
 		addOnlineCount(); // 在线数加1
 
 		System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
 		
-		// 群发消息
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");	
-		String date=format.format(new Date());
-		String message = "<li class='clearfix'>"+
-								"<div class='message-data align-right'>"+
-									" <span class='message-data-name'>"+date+"</span>"+
-									"<i class='fa fa-circle other'></i>"+
-								"</div>"+
-								"<div class='login-message float-right'>新用户"+session.toString().substring(session.toString().indexOf("@")+1)+
-								"加入！	当前在线人数为:" + getOnlineCount()+
-								"</div>"+
-							"</li>";
-		sendAllUser(message,session,1);
 	}
 
 	/**
@@ -69,23 +60,23 @@ public class MyWebSocket {
 	public void onClose() {
 
 		webSocketSet.remove(this); // 从set中删除
-
+		
 		subOnlineCount(); // 在线数减1
 
 		System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");	
 		String date=format.format(new Date());
-		String message = "<li class='clearfix'>"+
+		String message = "lgout<li class='clearfix' key='"+session.toString().substring(session.toString().indexOf("@")+1)+"'>"+
 								"<div class='message-data align-right'>"+
-									"<span class='message-data-time' style='font-size:20px'></span>"+
-									" <span class='message-data-name'>"+date+"</span>"+
-									"<i class='fa fa-circle other'></i>"+
+									"<span class='message-data-time'>"+date+"</span>"+
 								"</div>"+
-								"<div class='logout-message float-right'>用户"+session.toString().substring(session.toString().indexOf("@")+1)+
+								"<div class='message logout-message float-right' style='height:80px;width=80px;'>用户"+userName.get(session.toString().substring(session.toString().indexOf("@")+1))+
 								"退出！	当前在线人数为"+getOnlineCount()+
 								"</div>"+
 							"</li>";
+		
+		userName.remove(session.toString().substring(session.toString().indexOf("@")+1));
 		// 群发消息
 		sendAllUser(message,session,3);
 
@@ -100,16 +91,22 @@ public class MyWebSocket {
 
 	@OnMessage
 	public void onMessage(String message, Session session) {
-
+		
 		System.out.println("来自客户端的消息:" + message+"--session"+session);
+		//把name添加到map中，获取自己的 user列表
+		//刷新别人的用户列表
+		if(message.equals("#allUser")||(message.length()>5 && message.substring(0, 5).equals("#name"))){
+			userName.put(session.toString().substring(session.toString().indexOf("@")+1),message.substring(5));
+			getUserListAndUpdate(session);
+			return;
+		}		
 		// 群发消息
 		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");	
 		String date=format.format(new Date());
 		String message2 = "<li class='clearfix'>"+
 								"<div class='message-data align-right'>"+
-									"<span class='message-data-time' style='font-size:20px'>"+session.toString().substring(session.toString().indexOf("@")+1)+"</span>"+
-									" <span class='message-data-name'>"+date+"</span>"+
-									"<i class='fa fa-circle other'></i>"+
+									"<span class='message-data-time'>"+date+"</span>"+
+									" <span class='message-data-name' style='font-size:20px'>"+userName.get(session.toString().substring(session.toString().indexOf("@")+1))+"</span>"+
 								"</div>"+
 								"<div class='message other-message float-right'>"+
 									message+
@@ -148,11 +145,7 @@ public class MyWebSocket {
 		for (MyWebSocket item : webSocketSet) {
 			try {
 				if(item.session!=session){//不发消息给自己
-					if(type!=2){
-						item.sendMessage(message);
-					}else{
-						item.sendMessage(message);
-					}				
+					item.sendMessage(message);			
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -162,6 +155,67 @@ public class MyWebSocket {
 		}
 	}
 	
+	/**
+	 * 登录的用户获取所有的用户列表
+	 * 已经登录的用户增加用户列表
+	 * @param session
+	 */
+	public void getUserListAndUpdate(Session session){
+		String allUser="";
+		String user="";
+		for (MyWebSocket item : webSocketSet) {
+			if(item.session==session){
+				user="allUs<li class='clearfix' key='"+session.toString().substring(session.toString().indexOf("@")+1)+"'>"+
+						"<img src='faceImage/1.jpg' alt='avatar' />"+
+						"<div class='about'>"+
+							"<div class='name'>我</div>"+				
+						"</div></li>";	
+				allUser=user+allUser;
+			}else{
+				user="<li class='clearfix' key='"+item.session.toString().substring(session.toString().indexOf("@")+1)+"'>"+
+						"<img src='faceImage/3.jpg' alt='avatar' />"+
+						"<div class='about'>"+
+							"<div class='name'>"+userName.get(item.session.toString().substring(session.toString().indexOf("@")+1))+"</div>"+				
+						"</div></li>";	
+				allUser+=user;
+				
+				user="login<li class='clearfix' key='"+session.toString().substring(session.toString().indexOf("@")+1)+"'>"+
+						"<img src='faceImage/3.jpg' alt='avatar' />"+
+						"<div class='about'>"+
+							"<div class='name'>"+userName.get(session.toString().substring(session.toString().indexOf("@")+1))+"</div>"+				
+						"</div></li>";	
+				
+				try{
+					SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");	
+					String date=format.format(new Date());
+					String message = "login<li class='clearfix' key='"+session.toString().substring(session.toString().indexOf('@')+1)+"'>"+
+											"<div class='message-data align-right'>"+
+												" <span class='message-data-time'>"+date+"</span>"+
+											"</div>"+
+											"<div class='message login-message float-right' style='height:80px;width=80px;'>新用户"+userName.get(session.toString().substring(session.toString().indexOf("@")+1))+
+											"加入！	当前在线人数为:" + getOnlineCount()+
+											"</div>"+
+										"</li>";
+					item.sendMessage(message);
+				}catch (IOException e) {
+					e.printStackTrace();
+					continue;
+				}
+				
+			}
+		}
+		for (MyWebSocket item : webSocketSet) {
+			try {
+				if(item.session==session){//发消息给自己
+					item.sendMessage(allUser);				
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				continue;
+			}
+
+		}
+	}
 	/**
 	 * 发送给指点的人
 	 * @param message 信息
