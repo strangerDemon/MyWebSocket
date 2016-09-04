@@ -17,7 +17,7 @@ body {
     border-radius: 5px;
 }
 .people-list {
-    width: 260px;
+    width: 25%;
     float: left;
 }
 .people-list .search {

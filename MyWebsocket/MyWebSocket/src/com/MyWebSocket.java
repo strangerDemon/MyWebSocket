@@ -166,21 +166,21 @@ public class MyWebSocket {
 		for (MyWebSocket item : webSocketSet) {
 			if(item.session==session){
 				user="allUs<li class='clearfix' key='"+session.toString().substring(session.toString().indexOf("@")+1)+"'>"+
-						"<img src='faceImage/1.jpg' alt='avatar' />"+
+						"<img src='images/faceImage/1.jpg' alt='avatar' />"+
 						"<div class='about'>"+
 							"<div class='name'>Œ“</div>"+				
 						"</div></li>";	
 				allUser=user+allUser;
 			}else{
 				user="<li class='clearfix' key='"+item.session.toString().substring(session.toString().indexOf("@")+1)+"'>"+
-						"<img src='faceImage/3.jpg' alt='avatar' />"+
+						"<img src='images/faceImage/3.jpg' alt='avatar' />"+
 						"<div class='about'>"+
 							"<div class='name'>"+userName.get(item.session.toString().substring(session.toString().indexOf("@")+1))+"</div>"+				
 						"</div></li>";	
 				allUser+=user;
 				
 				user="login<li class='clearfix' key='"+session.toString().substring(session.toString().indexOf("@")+1)+"'>"+
-						"<img src='faceImage/3.jpg' alt='avatar' />"+
+						"<img src='images/faceImage/3.jpg' alt='avatar' />"+
 						"<div class='about'>"+
 							"<div class='name'>"+userName.get(session.toString().substring(session.toString().indexOf("@")+1))+"</div>"+				
 						"</div></li>";	

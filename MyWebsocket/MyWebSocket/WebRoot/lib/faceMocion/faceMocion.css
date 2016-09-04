@@ -47,28 +47,28 @@
 	float: left;
 	width: 48px; 
 	height: 48px; 
-	background: url(../../emoji/facebookEmoji.png) 0 0;
+	background: url(../../images/emoji/facebookEmoji.png) 0 0;
 }
 .asusta{
-	background: url(../../emoji/facebookEmoji.png) 0 -48px;
+	background: url(../../images/emoji/facebookEmoji.png) 0 -48px;
 }
 .divierte{
-	background: url(../../emoji/facebookEmoji.png) 0 -96px; 
+	background: url(../../images/emoji/facebookEmoji.png) 0 -96px; 
 }
 .gusta{
-	background: url(../../emoji/facebookEmoji.png) 0 -144px; 
+	background: url(../../images/emoji/facebookEmoji.png) 0 -144px; 
 }
 .amo{
-	background: url(../../emoji/facebookEmoji.png) 0 -192px;
+	background: url(../../images/emoji/facebookEmoji.png) 0 -192px;
 }
 .triste{
-	background: url(../../emoji/facebookEmoji.png) 0 -240px; 
+	background: url(../../images/emoji/facebookEmoji.png) 0 -240px; 
 }
 .asombro{
-	background: url(../../emoji/facebookEmoji.png) 0 -288px;
+	background: url(../../images/emoji/facebookEmoji.png) 0 -288px;
 }
 .alegre{
-	background: url(../../emoji/facebookEmoji.png) 0 -336px;
+	background: url(../../images/emoji/facebookEmoji.png) 0 -336px;
 }
 .MensajeTexto{
 	display:none;
